@@ -1,0 +1,73 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Karla', sans-serif;
+  background-color: #1c1c1c;
+  color: #293264;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.welcome {
+  background-color: #f5f7fb;
+  background-image: url(./images/1blob-top.png), url(./images/1blob-bottom.png);
+  background-repeat: no-repeat;
+  background-position: right 0%, left 100%;
+  background-size: 40%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 550px;
+  width: 550px;
+}
+
+.welcome > h1 {
+  font-size: 32px;
+  line-height: 37px;
+  margin: 0;
+}
+
+.welcome > p {
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 20px;
+  margin-top: 10px;
+  margin-bottom: 30px;
+}
+
+.btn {
+  background: #4d5b9e;
+  color: #f5f7fb;
+  font-size: 'Inter', sans-serif;
+  border-radius: 15px;
+  border: none;
+  cursor: pointer;
+}
+
+.welcome--btn {
+  font-weight: 500;
+  font-size: 16px;
+  height: 55px;
+  width: 195px;
+}
+
+.welcome--btn:active {
+  box-shadow: inset 5px 5px 10px -3px rgba(0, 0, 0, 0.7);
+}
+
+.blob-top {
+  position: absolute;
+  left: 50%;
+  right: -50%;
+  top: 0;
+  bottom: -100%;
+  height: 20%;
+  width: 20%;
+}
