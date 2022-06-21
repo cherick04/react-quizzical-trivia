@@ -8,8 +8,10 @@ function App() {
   const [hasCheckedAnswers, setHasCheckedAnswers] = useState(false)
   const [questionData, setquestionData] = useState([])
   const [questions, setQuestions] = useState([])
+  const [rightAnswerCount, setRightAnswerCount] = useState(0)
 
   useEffect(() => {
+    // Fetch data only if game has started
     if (hasStarted) {
       fetch(
         'https://opentdb.com/api.php?amount=5&difficulty=medium&type=multiple'
@@ -20,7 +22,6 @@ function App() {
   }, [hasStarted])
 
   useEffect(() => {
-    console.log('setting question in useEffect')
     setQuestions(questionData.map((item) => generateQuestionObject(item)))
   }, [questionData])
 
@@ -39,6 +40,7 @@ function App() {
     // Insert correct answer randomly
     const randomIndex = Math.floor(Math.random() * 3)
     answersArray.splice(randomIndex, 0, dataItem.correct_answer)
+
     return answersArray.map((answer) => ({
       id: nanoid(),
       text: answer,
@@ -63,6 +65,28 @@ function App() {
     )
   }
 
+  function checkAnswers() {
+    let correctAnswerCount = 0
+    questions.forEach((question) => {
+      const selectedAnswer = question.answers.find(
+        (answer) => answer.isSelected
+      )
+      if (selectedAnswer) {
+        if (selectedAnswer.text === question.correctAnswer) {
+          correctAnswerCount++
+        }
+      }
+    })
+    setRightAnswerCount(correctAnswerCount)
+    setHasCheckedAnswers(true)
+  }
+
+  function playAgain() {
+    setRightAnswerCount(0)
+    setHasCheckedAnswers(false)
+    setHasStarted(false)
+  }
+
   function startQuiz() {
     setHasStarted(true)
   }
@@ -71,6 +95,7 @@ function App() {
     <Question
       key={item.id}
       data={item}
+      hasCheckedAnswers={hasCheckedAnswers}
       selectAnswer={(e) => selectAnswer(item.id, e.target.id)}
     />
   ))
@@ -83,11 +108,18 @@ function App() {
           <div className="checkQuestions--lbl">
             {hasCheckedAnswers ? (
               <>
-                <span>You scored X/X correct answers</span>
-                <button className="btn check--btn">Play again</button>
+                <p>
+                  You scored {rightAnswerCount + '/' + questions.length} correct
+                  answers
+                </p>
+                <button className="btn check--btn" onClick={playAgain}>
+                  Play again
+                </button>
               </>
             ) : (
-              <button className="btn check--btn">Check answers</button>
+              <button className="btn check--btn" onClick={checkAnswers}>
+                Check answers
+              </button>
             )}
           </div>
         </div>
